@@ -91,7 +91,8 @@ guild_member_count = json["guild_member_count"]
 
 embed.add_embed_field(
     "길드원",
-    f"{guild_member_count}/200명"
+    f"{guild_member_count}/200명",
+    inline=False
 )
 
 # 플래그 레이스

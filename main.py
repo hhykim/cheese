@@ -1,5 +1,6 @@
 import os
 import sys
+from calendar import Calendar
 from collections import defaultdict
 from datetime import date, timedelta
 
@@ -34,7 +35,35 @@ webhook = DiscordWebhook(
     avatar_url=avatar_url,
     rate_limit_retry=True
 )
-embed = DiscordEmbed(color="58b9ff")
+
+month, week = 0, 0
+
+yesterday = date.today() - timedelta(1)
+cal = Calendar().monthdayscalendar(yesterday.year, yesterday.month)
+
+for i, v in enumerate(cal):
+    if yesterday.day in v:
+        if v[0] == 0:
+            yesterday = yesterday - timedelta(7)
+            cal = Calendar().monthdayscalendar(yesterday.year, yesterday.month)
+
+            if cal[0][0] == 0:
+                week = len(cal) - 1
+            else:
+                week = len(cal)
+        else:
+            if cal[0][0] == 0:
+                week = i
+            else:
+                week = i + 1
+
+        month = yesterday.month
+        break
+
+embed = DiscordEmbed(
+    f"길드 랭킹 ({month}월 {week}주차)",
+    color="58b9ff"
+)
 embed.set_footer("Data based on NEXON Open API")
 
 # 길드 식별자
@@ -59,7 +88,11 @@ params = {
 json = get_json(f"{url}/guild/basic", params)
 
 guild_member_count = json["guild_member_count"]
-embed.set_title(f"길드 랭킹 ({guild_member_count}/200명)")
+
+embed.add_embed_field(
+    "길드원",
+    f"{guild_member_count}/200명"
+)
 
 # 플래그 레이스
 today = date.today().strftime("%Y-%m-%d")
@@ -96,7 +129,7 @@ embed.add_embed_field(
     f"{ranking:,}위 ({guild_point:,}점)",
     inline=False
 )
-embed.fields.reverse()
+embed.fields[1], embed.fields[2] = embed.fields[2], embed.fields[1]
 webhook.add_embed(embed)
 
 def get_df(json, start, stop):

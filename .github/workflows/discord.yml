@@ -32,3 +32,5 @@ jobs:
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
         run: |
           if [ -f main.py ]; then python main.py; fi
+
+      - uses: gautamkrishnar/keepalive-workflow@v1

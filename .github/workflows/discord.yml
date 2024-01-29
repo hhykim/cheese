@@ -1,13 +1,13 @@
 name: Discord webhook
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: "0 0 * * 1"
 
 jobs:
   webhook:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
 

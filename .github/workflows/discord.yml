@@ -3,7 +3,7 @@ name: Discord webhook
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0 * * 4"
+    - cron: "0 0 * * 4"  # Every Thursday at 09:00 AM (KST)
 
 jobs:
   webhook:
@@ -33,4 +33,4 @@ jobs:
         run: |
           if [ -f main.py ]; then python main.py; fi
 
-      - uses: gautamkrishnar/keepalive-workflow@v1
+      - uses: gautamkrishnar/keepalive-workflow@v2

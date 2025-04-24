@@ -33,4 +33,4 @@ jobs:
         run: |
           if [ -f main.py ]; then python main.py; fi
 
-      - uses: gautamkrishnar/keepalive-workflow@v2
+      - uses: liskin/gh-workflow-keepalive@v1
